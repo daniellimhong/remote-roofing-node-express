@@ -15,8 +15,8 @@ sequelize
 
 // Routes
 app.use("/users", require("./routes/users"));
-// app.use("/projects", require("./routes/projects"));
-// app.use("/tasks", require("./routes/tasks"));
+app.use("/projects", require("./routes/projects"));
+app.use("/tasks", require("./routes/tasks"));
 
 const PORT = process.env.SERVER_PORT || 4000;
 
@@ -24,9 +24,11 @@ const PORT = process.env.SERVER_PORT || 4000;
 sequelize
   .sync()
   .then((res) => {
-    // console.log(res)
-    app.listen(PORT, console.log(`Server listening on port ${PORT}`));
+    // console.log(res)  
+    // app.listen(PORT, console.log(`Server listening on port ${PORT}`));
   })
   .catch((err) => {
     console.log(err);
   });
+
+module.exports = app;

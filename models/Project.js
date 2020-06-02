@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const User = require('./User');
 const db = require('../config/database');
 
 const Project = db.define('project', {
@@ -24,7 +25,7 @@ const Project = db.define('project', {
         type: Sequelize.INTEGER,
         references: {
             model: User,
-            key: "id"
+            key: "user_id"
         }
     }
 });

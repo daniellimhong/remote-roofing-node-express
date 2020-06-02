@@ -1,14 +1,16 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
+const User = require('./User');
+const Project = require('./Project');
 
 const Task = db.define('task', {
-    project_id: {
+    task_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    project_name: {
+    task_name: {
         type: Sequelize.STRING,
         allowNull: false
     },
@@ -28,14 +30,14 @@ const Task = db.define('task', {
         type: Sequelize.INTEGER,
         references: {
             model: User,
-            key: 'id'
+            key: 'user_id'
         }
     },
     project_id: {
         type: Sequelize.INTEGER,
         references: {
             model: Project,
-            key: 'id'
+            key: 'project_id'
         }
     }
 });
