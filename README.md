@@ -9,6 +9,7 @@ Current Status: Server set-up + db connection. Need to add data and test
 - pg
 - pg-hstore
 - dotenv
+- body-parser
 
 ## Queries
 ### DB Init

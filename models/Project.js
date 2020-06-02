@@ -1,25 +1,32 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
 
-const User = db.define('user', {
-    user_id: {
+const Project = db.define('project', {
+    project_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    name: {
+    project_name: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    surname: {
+    body: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    email: {
+    status: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    user_id: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: User,
+            key: "id"
+        }
     }
 });
 
-module.exports = User;
+module.exports = Project;

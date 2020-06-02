@@ -1,17 +1,32 @@
-const express = require("express");
-
-const app = express();
 require("dotenv").config();
+const express = require("express");
+const bodyParser = require("body-parser");
+const app = express();
+
+// Body parser
+app.use(bodyParser.json());
 
 // Database
-const db = require("./config/database");
-db.authenticate()
+const sequelize = require("./config/database");
+sequelize
+  .authenticate()
   .then(() => console.log("Database connection successful!"))
-  .catch(err => console.error("Error", err));
+  .catch((err) => console.error("Error", err));
 
-// User routes
-app.use('/users', require('./routes/users'));
+// Routes
+app.use("/users", require("./routes/users"));
+// app.use("/projects", require("./routes/projects"));
+// app.use("/tasks", require("./routes/tasks"));
 
 const PORT = process.env.SERVER_PORT || 4000;
 
-app.listen(PORT, console.log(`Server listening on port ${PORT}`));
+// Syncing models to DB & Server initiation
+sequelize
+  .sync()
+  .then((res) => {
+    // console.log(res)
+    app.listen(PORT, console.log(`Server listening on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.log(err);
+  });
