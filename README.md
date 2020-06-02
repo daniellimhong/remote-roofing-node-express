@@ -1,72 +1,170 @@
 # Remote Roofing Server
 
-Current Status: Server set-up + db connection. Need to add data and test
+**Current Status:** Deployed & In-Production
+
+## How To Test
+
+Test post endpoints with [Postman](https://web.postman.co/) or [API Tester](https://apitester.com/) and test get endpoints via browser
+
+Post User JSON Example
+
+```json
+// https://nameless-ravine-28120.herokuapp.com/users/addUser
+{
+  "name": "Daniel",
+  "surname": "Hong",
+  "email": "daniel@test.com"
+}
+```
+
+Post Task JSON Example
+
+```json
+// https://nameless-ravine-28120.herokuapp.com/tasks/addTask
+{
+  "task_name": "Deployment",
+  "description": "deploy node server to heroku",
+  "score": 8,
+  "status": "active",
+  "user_id": 1,
+  "project_id": 1
+}
+```
+
+```json
+// https://nameless-ravine-28120.herokuapp.com/users/addUser
+{
+  "project_name": "daniel's project",
+  "body": "remote roofing node server",
+  "status": "active",
+  "user_id": 1
+}
+```
+
+### Endpoints
+
+- GET /API/users - https://nameless-ravine-28120.herokuapp.com/users
+- GET /API/tasks - https://nameless-ravine-28120.herokuapp.com/tasks
+- GET /API/projects - https://nameless-ravine-28120.herokuapp.com/projects
+- POST /API/users - https://nameless-ravine-28120.herokuapp.com/users/addUser
+- POST /API/tasks - https://nameless-ravine-28120.herokuapp.com/tasks/addTask
+- POST /API/projects - https://nameless-ravine-28120.herokuapp.com/projects/addProject
+
+---
+
+## Models
+
+```javascript
+const User = db.define("user", {
+  user_id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  surname: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+});
+
+const Project = db.define("project", {
+  project_id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
+  project_name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  body: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  status: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  user_id: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: User,
+      key: "user_id",
+    },
+  },
+});
+
+const Task = db.define("task", {
+  task_id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
+  task_name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  score: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  status: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  user_id: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: User,
+      key: "user_id",
+    },
+  },
+  project_id: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Project,
+      key: "project_id",
+    },
+  },
+});
+```
+#### Relations
+- Project model references users via user_id
+- Task model references both users and projects via user_id and project_id respectively
 
 ## Dependencies
 
-- Express
-- Sequelize
+- express
+- sequelize
 - pg
 - pg-hstore
 - dotenv
 - body-parser
+- nodemon
+- jest
+- supertest
+- sequelize-cli
 
-## Queries
-### DB Init
-```sql
-drop table if exists users cascade;
-drop table if exists projects cascade;
-drop table if exists tasks cascade;
+### Checklist
 
-create table users (
-    user_id serial primary key,
-    name text not null,
-    surname text not null,
-    email text not null
-);
-
-create table projects (
-    project_id serial primary key,
-    project_name text not null,
-    body text not null,
-    status text not null,
-    user_id int references users(user_id)
-);
-
-create table tasks (
-    task_name text not null,
-    description text not null,
-    score int,
-    status text not null,
-    user_id int references users(user_id),
-    project_id int references projects(project_id)
-);
-```
-
-### Joins
-
-```sql
--- Joining user and project table
-select * from users join projects
-on (users.user_id = projects.user_id);
-
--- Joining project and task table
-select * from projects join tasks
-on (projects.project_id = tasks.project_id); 
-
--- Joining task and user table
-select * from tasks join users
-on (tasks.user_id = tasks.user_id); 
-```
-
-### Inserts
-```sql
-insert into users(name, users, email)
-values($1, $2, $3);
-
-insert into projects(project_name, body, status, user_id)
-values($1, $2, $3, $4);
-
-insert into tasks(task_name, description, score, status, user_id, project_id)
-values($1, $2, $3, $4, $5, $6);
-```
+- [x] Organize, design, test, document, and deploy code
+- [x] Node.js server using Express, Sequelize, & PostgreSQL (heroku)
+- [x] User Input Validation
+- [x] Endpoints
+- [x] ES6/7 & Async/Await
+- [x] Test coverage 

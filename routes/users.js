@@ -29,14 +29,16 @@ router.post("/addUser", async (req, res) => {
     errors.push({ error: "Please add a surname" });
   }
   if (!email) {
-    errors.push({ error: "Please add a email" });
+    errors.push({ error: "Please add an email" });
+  } else {
+    if(!email.includes("@") || !email.includes(".")){
+      errors.push({ error: "Please enter a valid email"})
+    }
   }
-  if(!email.includes("@") || !email.includes(".")){
-    errors.push({ error: "Please enter a valid email"})
-  }
+  
 
   if (errors.length > 0) {
-    errors.forEach((err) => console.log(`Error: ${err.text}`));
+    errors.forEach((err) => console.log(`Error: ${err.error}`));
     res.json({
       errors,
       name,
