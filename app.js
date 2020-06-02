@@ -1,7 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const compression = require('compression');
 const app = express();
+app.use(compression());
 
 // Body parser
 app.use(bodyParser.json());
