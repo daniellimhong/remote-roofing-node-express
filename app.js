@@ -16,6 +16,9 @@ sequelize
   .catch((err) => console.error("Error", err));
 
 // Routes
+app.use("/", (req, res) => {
+  res.redirect('/users');
+})
 app.use("/users", require("./routes/users"));
 app.use("/projects", require("./routes/projects"));
 app.use("/tasks", require("./routes/tasks"));
